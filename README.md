@@ -1,6 +1,13 @@
+# MIRA - Project Intelligence Assistant
+
 **Capstone Project** - Applied Agentic AI for Product Managers & Technical Program Managers
-**Author**: Raju Thomas
+**Author**: Raju Thomas | [rjtom](https://github.com/rjtom)
 **Date**: June 2, 2026
+
+> **Disclaimer**: All company names, project data, risk information, and scenarios
+> in this repository are completely fictional and fabricated for educational purposes only.
+> ForgeNova Automotive does not exist. This is an AI learning experiment for a
+> capstone project in Applied Agentic AI. No real company data is used or implied.
 
 ---
 
@@ -48,8 +55,8 @@ Orchestrator (gpt-4o-mini)
 
 ## Key Capabilities
 
-- **Project Planning** - Timelines, milestones, objectives, and success criteria from 26 ForgeNova project documents
-- **Risk Assessment** - Live risk data from Google Sheets including scores, mitigation strategies, HIL checkpoints
+- **Project Planning** - Timelines, milestones, objectives, and success criteria from 26 fictitious project documents
+- **Risk Assessment** - Fabricated risk data from Google Sheets including scores, mitigation strategies, HIL checkpoints
 - **Status Reporting** - Current project phase, progress, blockers, and next steps
 - **Governance Oversight** - Human-in-the-Loop recommendations and ethical review on every query
 - **Lessons Learned** - Cross-project insights and critical thinking analysis
@@ -93,7 +100,7 @@ MIRA uses a hybrid prompting methodology combining 10 techniques:
 | Persona Prompting | Consistent MIRA voice | All agents |
 | Output Structure Prompting | Defines expected format | All agents |
 
-See prompts/PROMPTING_METHODOLOGY.md for full details.
+See [prompts/PROMPTING_METHODOLOGY.md](prompts/PROMPTING_METHODOLOGY.md) for full details.
 
 ---
 
@@ -129,10 +136,10 @@ mira-project-intelligence-assistant/
 |-- flows/
 |   |-- MIRA_3_0_Final.json         Main MIRA flow export
 |   |-- MIRA_RAG_Final.json         RAG sub-flow export
-|-- historical_projects/             26 ForgeNova project markdown files
+|-- historical_projects/            26 fictitious project markdown files
 |   |-- 01_forgenova_ev_battery_expansion.md
 |   |-- ... (26 files total)
-|-- prompts/                         Agent system prompts
+|-- prompts/                        Agent system prompts
 |   |-- PROMPTING_METHODOLOGY.md
 |   |-- orchestrator_prompt.md
 |   |-- planner_prompt.md
@@ -140,24 +147,38 @@ mira-project-intelligence-assistant/
 |   |-- status_reporter_prompt.md
 |   |-- governance_prompt.md
 |   |-- final_synthesizer_prompt.md
-|-- evals/                           Evaluation suite
-|   |-- mira_eval_suite.py           Full eval with LLM judge
-|   |-- mira_eval.py                 Basic content eval
-|   |-- mira_hallucination_eval.py   Hallucination detection
-|   |-- mira_single_test.py          Quick single project test
-|   |-- results/                     CSV and JSON eval outputs
-|-- maintenance/                     Vector store maintenance
-|   |-- health_check.py              Daily collection health check
-|   |-- reingest.py                  Smart re-ingest changed files
-|   |-- full_reingest.py             Full collection rebuild
-|   |-- cache_manager.py             Embedding cache management
-|   |-- verify_chunks.py             Verify all projects present
-|   |-- README_MAINTENANCE.md        Maintenance guide
+|-- evals/                          Evaluation suite
+|   |-- mira_eval_suite.py          Full eval with LLM judge
+|   |-- mira_eval.py                Basic content eval
+|   |-- mira_hallucination_eval.py  Hallucination detection
+|   |-- mira_single_test.py         Quick single project test
+|   |-- results/                    CSV and JSON eval outputs
+|-- maintenance/                    Vector store maintenance
+|   |-- health_check.py             Daily collection health check
+|   |-- reingest.py                 Smart re-ingest changed files
+|   |-- full_reingest.py            Full collection rebuild
+|   |-- cache_manager.py            Embedding cache management
+|   |-- verify_chunks.py            Verify all projects present
+|   |-- README_MAINTENANCE.md       Maintenance guide
 |-- docs/
-|   |-- PHASE2_ROADMAP.md            Phase 2 product roadmap
+|   |-- PHASE2_ROADMAP.md           Phase 2 product roadmap
 |-- .vscode/
-|   |-- launch.json                  VSCode run configurations
+|   |-- launch.json                 VSCode run configurations
 ```
+
+---
+
+## About the Fictitious Data
+
+All project data in `historical_projects/` is completely fabricated:
+
+- **ForgeNova Automotive** - fictional company, does not exist
+- **26 project documents** - AI-generated scenarios for learning purposes
+- **Risk Matrix** - fabricated risk data in Google Sheets for demo purposes
+- **All timelines, budgets, team sizes** - fictional numbers for educational use
+
+This data was specifically designed to test RAG retrieval, grounding, and
+hallucination detection in a multi-agent AI system.
 
 ---
 
@@ -190,35 +211,13 @@ cd mira-project-intelligence-assistant
 
 ```bash
 cp .env.example .env
-```
-
-Edit .env with your actual values:
-```
-LANGFLOW_URL=http://127.0.0.1:7860
-FLOW_ID=your_langflow_flow_id
-LANGFLOW_API_KEY=your_langflow_api_key
-ANTHROPIC_API_KEY=your_anthropic_api_key
-OPENAI_API_KEY=your_openai_api_key
-GOOGLE_SHEETS_API_KEY=your_sheets_api_key
-SPREADSHEET_ID=your_spreadsheet_id
+# Edit .env with your actual API keys
 ```
 
 ### Step 4 - Set Up Chroma Vector Store
 
-Ingest all 26 project documents into Chroma DB:
-
 ```bash
 ~/.langflow/.langflow-venv/bin/python3 maintenance/full_reingest.py
-```
-
-This will:
-- Create the MIRARAG collection in Chroma DB
-- Chunk all 26 project markdown files by section
-- Embed each chunk using text-embedding-3-small
-- Store with source metadata for reliable filtering
-
-Verify the ingestion:
-```bash
 ~/.langflow/.langflow-venv/bin/python3 maintenance/verify_chunks.py
 ```
 
@@ -232,35 +231,29 @@ Status: PASS
 ### Step 5 - Import Flows into Langflow Desktop
 
 1. Open Langflow Desktop
-2. Click Import flow
-3. Import flows/MIRA_3_0_Final.json as the main flow
-4. Import flows/MIRA_RAG_Final.json as the RAG flow
-5. Configure API keys in Langflow Global Variables:
-   - OPENAI_API_KEY
-   - ANTHROPIC_API_KEY
+2. Import `flows/MIRA_3_0_Final.json` as the main flow
+3. Import `flows/MIRA_RAG_Final.json` as the RAG flow
+4. Configure API keys in Langflow Global Variables
 
 ### Step 6 - Configure Custom Components
 
-In the main MIRA flow configure:
-
 MIRA_Project_RAG component:
-- Chroma Path: /Users/YOUR_USERNAME/.langflow/chroma_db
-- Collection Name: MIRARAG
+- Chroma Path: `/Users/YOUR_USERNAME/.langflow/chroma_db`
+- Collection Name: `MIRARAG`
 - OpenAI API Key: your key
 
-MIRA Risk Matrix Reader component:
+MIRA Risk Matrix Reader:
 - Service Account JSON: path to your Google Service Account file
 - Spreadsheet ID: your Google Sheets ID
-- Range: Risks_Master!A1:Z1000
+- Range: `Risks_Master!A1:Z1000`
 
 ### Step 7 - Test MIRA
 
-Run a quick single project test:
 ```bash
 ~/.langflow/.langflow-venv/bin/python3 evals/mira_single_test.py
 ```
 
-Or test directly in Langflow Playground:
+Or in Langflow Playground:
 ```
 What is the timeline for ForgeNova EV Battery Gigafactory Expansion?
 What are the major risks for ForgeNova Autonomous Driving Platform?
@@ -273,20 +266,17 @@ What lessons were learned from ForgeNova DevOps Pipeline Transformation?
 ~/.langflow/.langflow-venv/bin/python3 evals/mira_eval_suite.py
 ```
 
-156 queries across 26 projects. Takes approximately 45 minutes.
-Results saved to evals/results/
+156 queries across 26 projects. ~45 minutes. Results saved to `evals/results/`
 
 ---
 
 ## Vector Store Maintenance
 
-Keep your Chroma DB healthy with the maintenance scripts:
-
 ```bash
 # Daily health check
 ~/.langflow/.langflow-venv/bin/python3 maintenance/health_check.py
 
-# After updating any project markdown files
+# After updating project files
 ~/.langflow/.langflow-venv/bin/python3 maintenance/reingest.py
 ~/.langflow/.langflow-venv/bin/python3 maintenance/cache_manager.py --clear-all
 ~/.langflow/.langflow-venv/bin/python3 maintenance/verify_chunks.py
@@ -295,20 +285,19 @@ Keep your Chroma DB healthy with the maintenance scripts:
 ~/.langflow/.langflow-venv/bin/python3 maintenance/full_reingest.py
 ```
 
-See maintenance/README_MAINTENANCE.md for full cron schedule and runbooks.
+See [maintenance/README_MAINTENANCE.md](maintenance/README_MAINTENANCE.md) for cron schedule and runbooks.
 
 ---
 
 ## Evaluation Framework
 
 ### Layer 1 - Content Pass/Fail
-- 26 projects x 5 RAG questions + 1 risk question = 156 queries
+- 26 projects x 6 questions = 156 queries
 - Checks: project name present, question keywords, not generic, >200 chars
 
 ### Layer 2 - Hallucination Detection
 - RAG responses vs markdown source files
 - Risk responses vs Google Sheets data
-- Checks: timeline accuracy, status, team size, milestone dates
 
 ### Layer 3 - LLM as Judge (Claude Sonnet)
 
@@ -324,15 +313,16 @@ Target: Overall score >= 7.5/10
 
 ---
 
-## Performance
+## Performance Results
 
-| Metric | Target | Current |
-|--------|--------|---------|
-| Content pass rate | >95% | TBD after eval |
-| LLM Judge score | >7.5/10 | TBD after eval |
-| Hallucination rate | <5% | TBD after eval |
-| Avg response time | <25s | ~20s |
+| Metric | Target | Result |
+|--------|--------|--------|
+| Content pass rate | >95% | **100%** (156/156) |
+| LLM Judge score | >7.5/10 | Pending Anthropic key |
+| Avg response time | <25s | 27.7s |
 | Cost per query | <$0.10 | ~$0.05 |
+| Total eval queries | 156 | 156 |
+| Projects tested | 26 | 26 |
 
 ---
 
@@ -351,7 +341,7 @@ Target: Overall score >= 7.5/10
 
 ## Phase 2 Roadmap
 
-See docs/PHASE2_ROADMAP.md for details on:
+See [docs/PHASE2_ROADMAP.md](docs/PHASE2_ROADMAP.md) for:
 - Email Status Report Addon (automated weekly reports)
 - Planning View (web interface)
 - Risk Assessor View (web interface)
@@ -362,22 +352,16 @@ See docs/PHASE2_ROADMAP.md for details on:
 
 ## Risk Management
 
-See RISK_MANAGEMENT.md for the complete risk register covering:
-- 15 identified risks
+See [RISK_MANAGEMENT.md](RISK_MANAGEMENT.md) for:
+- 15 identified system risks
 - 5 risks resolved during development
 - HIL checkpoint requirements
-- Monitoring and maintenance approach
-
-| Content pass rate  | >95%    | **100%** ✅ |
-| LLM Judge score    | >7.5/10 | TBD (re-run with Anthropic key) |
-| Hallucination rate | <5%     | TBD |
-| Avg response time  | <25s    | 27.7s |
-| Cost per query     | <$0.10  | ~$0.05 |
+- Monitoring approach
 
 ---
 
 Supporting human wisdom, not replacing it.
 
-Raju Thomas
+**Raju Thomas**
 Capstone Project - Applied Agentic AI
 June 2026
