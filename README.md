@@ -316,16 +316,13 @@ See [maintenance/README_MAINTENANCE.md](maintenance/README_MAINTENANCE.md) for c
 
 ## Performance Results
 
-| Metric | Target | Result |
-|--------|--------|--------|
-| Content pass rate | >95% | **100%** (156/156) ✅ |
-| LLM Judge score | >7.5/10 | **~8.8/10** ✅ |
-| Hallucination Free score | >7.5/10 | **~9.0/10** ✅ |
-| Avg response time | <25s | **27s** |
-| Cost per query | <$0.10 | **~$0.05** ✅ |
-| Total eval queries | 156 | **156** |
-| Projects tested | 26 | **26** |
-| Question types | 6 | **6** |
+| Content pass rate  | >95%    | **99.2%** (129/130) ✅ |
+| LLM Judge score    | >7.5/10 | **8.3/10** ✅ |
+| Hallucination Free | >7.5/10 | **~9.0/10** ✅ |
+| Avg response time  | <25s    | 27.8s |
+| Cost per query     | <$0.10  | ~$0.05 ✅ |
+| Projects tested    | 26      | 26 ✅ |
+| Total eval queries | 130     | 130 ✅ |
 
 ### LLM Judge Breakdown (Claude Sonnet as Judge)
 
