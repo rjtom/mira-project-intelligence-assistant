@@ -318,13 +318,30 @@ See [maintenance/README_MAINTENANCE.md](maintenance/README_MAINTENANCE.md) for c
 
 | Metric | Target | Result |
 |--------|--------|--------|
-| Content pass rate | >95% | **99.2%** (129/130) ✅ |
-| LLM Judge score | >7.5/10 | **8.3/10** ✅ |
-| Hallucination Free | >7.5/10 | **~9.0/10** ✅ |
-| Avg response time | <25s | 27.8s |
-| Cost per query | <$0.10 | ~$0.05 ✅ |
-| Projects tested | 26 | 26 ✅ |
-| Total eval queries | 130 | 130 ✅ |
+| Content pass rate | >95% | **100%** (156/156) ✅ |
+| LLM Judge score | >7.5/10 | **~8.8/10** ✅ |
+| Hallucination Free score | >7.5/10 | **~9.0/10** ✅ |
+| Avg response time | <25s | **27s** |
+| Cost per query | <$0.10 | **~$0.05** ✅ |
+| Total eval queries | 156 | **156** |
+| Projects tested | 26 | **26** |
+| Question types | 6 | **6** |
+
+### LLM Judge Breakdown (Claude Sonnet as Judge)
+
+| Dimension | Score |
+|-----------|-------|
+| Factual Accuracy | ~9.0/10 |
+| Groundedness | ~9.0/10 |
+| Completeness | ~8.5/10 |
+| Hallucination Free | ~9.0/10 |
+| Relevance | ~9.0/10 |
+| **Overall** | **~8.8/10** |
+
+> Scores based on 130 RAG queries across 26 projects.
+> Judge notes: MIRA occasionally provides more context than
+> strictly asked — flagged as minor over-completeness,
+> not hallucination. Governance questions score highest (10/10).
 
 ---
 
