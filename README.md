@@ -368,6 +368,12 @@ See RISK_MANAGEMENT.md for the complete risk register covering:
 - HIL checkpoint requirements
 - Monitoring and maintenance approach
 
+| Content pass rate  | >95%    | **100%** ✅ |
+| LLM Judge score    | >7.5/10 | TBD (re-run with Anthropic key) |
+| Hallucination rate | <5%     | TBD |
+| Avg response time  | <25s    | 27.7s |
+| Cost per query     | <$0.10  | ~$0.05 |
+
 ---
 
 Supporting human wisdom, not replacing it.
