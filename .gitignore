@@ -1,0 +1,10 @@
+.env
+evals/results/*.csv
+evals/results/*.json
+__pycache__/
+*.pyc
+.venv/
+chroma_db/
+embedding_cache/
+.DS_Store
+*.log

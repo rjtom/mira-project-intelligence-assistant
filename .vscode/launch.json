@@ -1,0 +1,41 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "MIRA Full Eval Suite",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/evals/mira_eval_suite.py",
+            "python": "/Users/thomasraju/.langflow/.langflow-venv/bin/python3",
+            "console": "integratedTerminal",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "name": "MIRA Basic Eval",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/evals/mira_eval.py",
+            "python": "/Users/thomasraju/.langflow/.langflow-venv/bin/python3",
+            "console": "integratedTerminal",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "name": "MIRA Single Project Test",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/evals/mira_single_test.py",
+            "python": "/Users/thomasraju/.langflow/.langflow-venv/bin/python3",
+            "console": "integratedTerminal",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "name": "MIRA Hallucination Eval",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/evals/mira_hallucination_eval.py",
+            "python": "/Users/thomasraju/.langflow/.langflow-venv/bin/python3",
+            "console": "integratedTerminal",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
