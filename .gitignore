@@ -1,6 +1,6 @@
 .env
-evals/results/*.csv
-evals/results/*.json
+#evals/results/*.csv
+#evals/results/*.json
 __pycache__/
 *.pyc
 .venv/

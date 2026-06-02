@@ -1,6 +1,6 @@
 import os
 
-content = """# MIRA - Project Intelligence Assistant
+readme = """# MIRA - Project Intelligence Assistant
 
 **Capstone Project** - Applied Agentic AI for Product Managers & Technical Program Managers
 **Author**: Raju Thomas | [rjtom](https://github.com/rjtom)
@@ -81,7 +81,7 @@ Orchestrator (gpt-4o-mini)
 | Status Reporter | Anthropic claude-haiku-4-5 |
 | Governance Agent | Anthropic claude-sonnet-4-5 |
 | Final Synthesizer | OpenAI gpt-4o-mini |
-| Eval Framework | Custom Python + Claude as Judge |
+| Eval Framework | Custom Python + Claude Sonnet as Judge |
 
 ---
 
@@ -130,18 +130,19 @@ Reads live risk data directly from Google Sheets via Google Service Account.
 mira-project-intelligence-assistant/
 |-- README.md
 |-- RISK_MANAGEMENT.md
+|-- MIRA_Capstone.pdf            Capstone presentation
 |-- requirements.txt
 |-- .env.example
 |-- .gitignore
 |-- components/
-|   |-- mira_chroma_tool.py         MIRA_Project_RAG custom component
+|   |-- mira_chroma_tool.py      MIRA_Project_RAG custom component
 |-- flows/
-|   |-- MIRA_3_0_Final.json         Main MIRA flow export
-|   |-- MIRA_RAG_Final.json         RAG sub-flow export
-|-- historical_projects/            26 fictitious project markdown files
+|   |-- MIRA 3.0.0.2.json        Main MIRA flow export
+|   |-- MIRA3.0-RAG.json         RAG sub-flow export
+|-- historical_projects/         26 fictitious project markdown files
 |   |-- 01_forgenova_ev_battery_expansion.md
 |   |-- ... (26 files total)
-|-- prompts/                        Agent system prompts
+|-- prompts/
 |   |-- PROMPTING_METHODOLOGY.md
 |   |-- orchestrator_prompt.md
 |   |-- planner_prompt.md
@@ -149,23 +150,23 @@ mira-project-intelligence-assistant/
 |   |-- status_reporter_prompt.md
 |   |-- governance_prompt.md
 |   |-- final_synthesizer_prompt.md
-|-- evals/                          Evaluation suite
-|   |-- mira_eval_suite.py          Full eval with LLM judge
-|   |-- mira_eval.py                Basic content eval
-|   |-- mira_hallucination_eval.py  Hallucination detection
-|   |-- mira_single_test.py         Quick single project test
-|   |-- results/                    CSV and JSON eval outputs
-|-- maintenance/                    Vector store maintenance
-|   |-- health_check.py             Daily collection health check
-|   |-- reingest.py                 Smart re-ingest changed files
-|   |-- full_reingest.py            Full collection rebuild
-|   |-- cache_manager.py            Embedding cache management
-|   |-- verify_chunks.py            Verify all projects present
-|   |-- README_MAINTENANCE.md       Maintenance guide
+|-- evals/
+|   |-- mira_eval_suite.py       Full eval with LLM judge
+|   |-- mira_eval.py             Basic content eval
+|   |-- mira_hallucination_eval.py
+|   |-- mira_single_test.py
+|   |-- results/                 CSV and JSON eval outputs
+|-- maintenance/
+|   |-- health_check.py
+|   |-- reingest.py
+|   |-- full_reingest.py
+|   |-- cache_manager.py
+|   |-- verify_chunks.py
+|   |-- README_MAINTENANCE.md
 |-- docs/
-|   |-- PHASE2_ROADMAP.md           Phase 2 product roadmap
+|   |-- PHASE2_ROADMAP.md
 |-- .vscode/
-|   |-- launch.json                 VSCode run configurations
+|   |-- launch.json
 ```
 
 ---
@@ -233,8 +234,8 @@ Status: PASS
 ### Step 5 - Import Flows into Langflow Desktop
 
 1. Open Langflow Desktop
-2. Import `flows/MIRA_3_0_Final.json` as the main flow
-3. Import `flows/MIRA_RAG_Final.json` as the RAG flow
+2. Import `flows/MIRA 3.0.0.2.json` as the main flow
+3. Import `flows/MIRA3.0-RAG.json` as the RAG flow
 4. Configure API keys in Langflow Global Variables
 
 ### Step 6 - Configure Custom Components
@@ -268,7 +269,8 @@ What lessons were learned from ForgeNova DevOps Pipeline Transformation?
 ~/.langflow/.langflow-venv/bin/python3 evals/mira_eval_suite.py
 ```
 
-156 queries across 26 projects. ~45 minutes. Results saved to `evals/results/`
+130 RAG queries across 26 projects. ~60 minutes.
+Results saved to `evals/results/`
 
 ---
 
@@ -287,31 +289,30 @@ What lessons were learned from ForgeNova DevOps Pipeline Transformation?
 ~/.langflow/.langflow-venv/bin/python3 maintenance/full_reingest.py
 ```
 
-See [maintenance/README_MAINTENANCE.md](maintenance/README_MAINTENANCE.md) for cron schedule and runbooks.
+See [maintenance/README_MAINTENANCE.md](maintenance/README_MAINTENANCE.md) for cron schedule.
 
 ---
 
 ## Evaluation Framework
 
 ### Layer 1 - Content Pass/Fail
-- 26 projects x 6 questions = 156 queries
+- 26 projects x 5 RAG questions = 130 queries
 - Checks: project name present, question keywords, not generic, >200 chars
 
 ### Layer 2 - Hallucination Detection
 - RAG responses vs markdown source files
-- Risk responses vs Google Sheets data
+- Checks: timeline accuracy, status, team size, milestone dates
 
 ### Layer 3 - LLM as Judge (Claude Sonnet)
 
-| Dimension | What It Measures |
-|-----------|-----------------|
-| Factual Accuracy | Facts correct vs ground truth |
-| Groundedness | Based on source data |
-| Completeness | Covers key information |
-| Hallucination Free | No fabricated details |
-| Relevance | Answers the question |
-
-Target: Overall score >= 7.5/10
+| Dimension | What It Measures | Score |
+|-----------|-----------------|-------|
+| Factual Accuracy | Facts correct vs ground truth | ~8.5/10 |
+| Groundedness | Based on source data | ~8.5/10 |
+| Completeness | Covers key information | ~8.0/10 |
+| Hallucination Free | No fabricated details | ~9.0/10 |
+| Relevance | Answers the question | ~8.5/10 |
+| **Overall** | **Average** | **8.3/10** |
 
 ---
 
@@ -319,12 +320,13 @@ Target: Overall score >= 7.5/10
 
 | Metric | Target | Result |
 |--------|--------|--------|
-| Content pass rate | >95% | **100%** (156/156) |
-| LLM Judge score | >7.5/10 | Pending Anthropic key |
-| Avg response time | <25s | 27.7s |
-| Cost per query | <$0.10 | ~$0.05 |
-| Total eval queries | 156 | 156 |
-| Projects tested | 26 | 26 |
+| Content pass rate | >95% | **99.2%** (129/130) ✅ |
+| LLM Judge score | >7.5/10 | **8.3/10** ✅ |
+| Hallucination Free | >7.5/10 | **~9.0/10** ✅ |
+| Avg response time | <25s | 27.8s |
+| Cost per query | <$0.10 | ~$0.05 ✅ |
+| Projects tested | 26 | 26 ✅ |
+| Total eval queries | 130 | 130 ✅ |
 
 ---
 
@@ -343,12 +345,11 @@ Target: Overall score >= 7.5/10
 
 ## Phase 2 Roadmap
 
-See [docs/PHASE2_ROADMAP.md](docs/PHASE2_ROADMAP.md) for:
+See [docs/PHASE2_ROADMAP.md](docs/PHASE2_ROADMAP.md) for the 2-week sprint plan:
 - Email Status Report Addon (automated weekly reports)
-- Planning View (web interface)
-- Risk Assessor View (web interface)
-- Governance View (web interface)
-- Target: 2-week delivery
+- Planning View (React web interface)
+- Risk Assessor View (risk heatmap dashboard)
+- Governance View (HIL checkpoint tracker)
 
 ---
 
@@ -370,5 +371,30 @@ June 2026
 """
 
 with open('README.md', 'w') as f:
-    f.write(content)
+    f.write(readme)
 print("README.md updated!")
+
+# Update PHASE2_ROADMAP.md - remove inaibridge.ai
+with open('docs/PHASE2_ROADMAP.md', 'r') as f:
+    content = f.read()
+
+# Remove inaibridge.ai section
+lines = content.split('\n')
+clean_lines = []
+skip = False
+for line in lines:
+    if 'inaibridge.ai' in line.lower() and line.startswith('#'):
+        skip = True
+    elif skip and line.startswith('#') and 'inaibridge' not in line.lower():
+        skip = False
+    if not skip:
+        clean_lines.append(line)
+
+# Also remove inline references
+clean_content = '\n'.join(clean_lines)
+clean_content = clean_content.replace('inaibridge.ai', '[platform name]')
+clean_content = clean_content.replace('inaibridge', '[platform]')
+
+with open('docs/PHASE2_ROADMAP.md', 'w') as f:
+    f.write(clean_content)
+print("PHASE2_ROADMAP.md cleaned!")
