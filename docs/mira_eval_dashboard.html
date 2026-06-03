@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIRA Eval Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafc; color: #1e2761; padding: 2rem; }
+  h1 { font-size: 22px; font-weight: 500; margin-bottom: 0.25rem; }
+  .subtitle { font-size: 14px; color: #64748b; margin-bottom: 1.5rem; }
+  .metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 1.5rem; }
+  .metric { background: white; border-radius: 8px; padding: 1rem; border: 0.5px solid #e2e8f0; }
+  .metric-label { font-size: 13px; color: #64748b; margin-bottom: 4px; }
+  .metric-value { font-size: 24px; font-weight: 500; }
+  .green { color: #1D9E75; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+  .chart-card { background: white; border-radius: 8px; padding: 1rem 1.25rem; border: 0.5px solid #e2e8f0; }
+  .chart-title { font-size: 14px; font-weight: 500; color: #64748b; margin-bottom: 0.75rem; }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 8px; font-size: 12px; color: #64748b; }
+  .legend span { display: flex; align-items: center; gap: 4px; }
+  .dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+  .footer { text-align: center; font-size: 12px; color: #94a3b8; margin-top: 2rem; padding-top: 1rem; border-top: 0.5px solid #e2e8f0; }
+</style>
+</head>
+<body>
+
+<h1>MIRA Evaluation Dashboard</h1>
+<p class="subtitle">Capstone Project — Applied Agentic AI | June 2, 2026 | 130 queries × 26 ForgeNova projects</p>
+
+<div class="metrics">
+  <div class="metric">
+    <div class="metric-label">Content pass rate</div>
+    <div class="metric-value green">99.2%</div>
+  </div>
+  <div class="metric">
+    <div class="metric-label">LLM judge score</div>
+    <div class="metric-value green">8.3/10</div>
+  </div>
+  <div class="metric">
+    <div class="metric-label">Avg response time</div>
+    <div class="metric-value">27.8s</div>
+  </div>
+  <div class="metric">
+    <div class="metric-label">Total queries</div>
+    <div class="metric-value">130</div>
+  </div>
+</div>
+
+<div class="grid2">
+  <div class="chart-card">
+    <div class="chart-title">Judge score by question type</div>
+    <div class="legend">
+      <span><span class="dot" style="background:#1D9E75"></span>Score</span>
+      <span><span class="dot" style="background:#D3D1C7;border:1px dashed #888"></span>Target (7.5)</span>
+    </div>
+    <div style="position:relative;height:200px;">
+      <canvas id="chart1" role="img" aria-label="Judge scores by question type">Objectives 9.2, Timeline 8.6, Governance 8.3, Lessons 8.0, Resources 7.5</canvas>
+    </div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">Score distribution</div>
+    <div class="legend">
+      <span><span class="dot" style="background:#378ADD"></span>Responses</span>
+    </div>
+    <div style="position:relative;height:200px;">
+      <canvas id="chart2" role="img" aria-label="Score distribution">Score 9/10 dominates with 68 responses.</canvas>
+    </div>
+  </div>
+</div>
+
+<div class="chart-card" style="margin-bottom:1.5rem;">
+  <div class="chart-title">Average judge score by project</div>
+  <div class="legend">
+    <span><span class="dot" style="background:#1D9E75"></span>≥ 9.0</span>
+    <span><span class="dot" style="background:#378ADD"></span>8.0–8.9</span>
+    <span><span class="dot" style="background:#EF9F27"></span>7.0–7.9</span>
+    <span><span class="dot" style="background:#E24B4A"></span>&lt; 7.0</span>
+  </div>
+  <div style="position:relative;height:520px;">
+    <canvas id="chart3" role="img" aria-label="Judge scores by project">DevOps Pipeline leads at 9.6, Circular Economy lowest at 6.4.</canvas>
+  </div>
+</div>
+
+<div class="grid2">
+  <div class="chart-card">
+    <div class="chart-title">Response time by question type</div>
+    <div style="position:relative;height:200px;">
+      <canvas id="chart4" role="img" aria-label="Response time by question type">Governance 29.1s, Lessons 28.4s, Resources 27.4s, Timeline 27.4s, Objectives 26.7s</canvas>
+    </div>
+  </div>
+  <div class="chart-card">
+    <div class="chart-title">Pass rate by question type</div>
+    <div style="position:relative;height:200px;">
+      <canvas id="chart5" role="img" aria-label="Pass rate by question type">Timeline, Objectives, Governance, Lessons all 100%. Resources 96.2%.</canvas>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  MIRA — Project Intelligence Assistant | Raju Thomas | Capstone Project Applied Agentic AI | June 2026<br>
+  Supporting human wisdom, not replacing it.
+</div>
+
+<script>
+const teal='#1D9E75',blue='#378ADD',amber='#EF9F27',red='#E24B4A',gray='#B4B2A9';
+const textColor='#64748b', gridColor='rgba(0,0,0,0.06)';
+Chart.defaults.color=textColor;
+Chart.defaults.font.family='inherit';
+Chart.defaults.font.size=12;
+
+new Chart(document.getElementById('chart1'),{
+  type:'bar',
+  data:{
+    labels:['Objectives','Timeline','Governance','Lessons','Resources'],
+    datasets:[
+      {label:'Score',data:[9.2,8.6,8.3,8.0,7.5],backgroundColor:[teal,teal,teal,teal,amber],borderRadius:4},
+      {label:'Target',data:[7.5,7.5,7.5,7.5,7.5],type:'line',borderColor:gray,borderDash:[4,4],pointRadius:0,fill:false}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{y:{min:0,max:10,grid:{color:gridColor},ticks:{stepSize:2}},x:{grid:{display:false},ticks:{autoSkip:false}}}}
+});
+
+new Chart(document.getElementById('chart2'),{
+  type:'bar',
+  data:{
+    labels:['2','3','5','6','7','8','9','10'],
+    datasets:[{label:'Responses',data:[1,5,2,6,15,14,68,19],
+      backgroundColor:[red,red,amber,amber,blue,blue,teal,teal],borderRadius:4}]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{y:{grid:{color:gridColor}},x:{grid:{display:false},title:{display:true,text:'Score'}}}}
+});
+
+const projects=['DevOps Pipeline','Multi-Cloud Infra','Autonomous Driving','Global ERP',
+  'AI Quality Control','Hydrogen Fuel Cell','Urban Air Mobility','Blockchain Supply',
+  'EV Battery Gigafactory','Data Analytics','Digital Twin','Quantum Software',
+  'Connected Car','Cybersecurity','SDV Platform','Sustainability Dashboard',
+  'AI Driver Assistance','Electric SUV','Supply Chain','Autonomous Logistics',
+  'AI Ethics','Next-Gen Battery','Employee Experience','Battery Recycling',
+  'Advanced Sustainability','Circular Economy'];
+const pScores=[9.6,9.4,9.2,9.2,9.0,9.0,8.6,8.6,8.8,8.8,8.4,8.4,8.4,8.2,8.2,8.2,8.1,8.0,8.0,8.0,7.4,7.4,7.4,7.2,8.6,6.4];
+const pColors=pScores.map(s=>s>=9?teal:s>=8?blue:s>=7?amber:red);
+
+new Chart(document.getElementById('chart3'),{
+  type:'bar',
+  data:{labels:projects,datasets:[{label:'Score',data:pScores,backgroundColor:pColors,borderRadius:3}]},
+  options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{x:{min:0,max:10,grid:{color:gridColor},ticks:{stepSize:2}},y:{grid:{display:false},ticks:{font:{size:11}}}}}
+});
+
+new Chart(document.getElementById('chart4'),{
+  type:'bar',
+  data:{
+    labels:['Governance','Lessons','Resources','Timeline','Objectives'],
+    datasets:[{label:'Avg time (s)',data:[29.1,28.4,27.4,27.4,26.7],backgroundColor:blue,borderRadius:4}]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{y:{min:25,max:31,grid:{color:gridColor}},x:{grid:{display:false},ticks:{autoSkip:false}}}}
+});
+
+new Chart(document.getElementById('chart5'),{
+  type:'bar',
+  data:{
+    labels:['Timeline','Objectives','Governance','Lessons','Resources'],
+    datasets:[{label:'Pass rate %',data:[100,100,100,100,96.2],backgroundColor:[teal,teal,teal,teal,amber],borderRadius:4}]
+  },
+  options:{responsive:true,maintainAspectRatio:false,
+    plugins:{legend:{display:false}},
+    scales:{y:{min:90,max:101,grid:{color:gridColor}},x:{grid:{display:false},ticks:{autoSkip:false}}}}
+});
+</script>
+</body>
+</html>
