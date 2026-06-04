@@ -385,3 +385,93 @@ body {
   color: #64748b;
   margin: 6px 0;
 }
+
+/* Table Styles */
+.message-text table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.75rem 0;
+  font-size: 13px;
+}
+
+.message-text th {
+  background: #1E2761;
+  color: white;
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 12px;
+}
+
+.message-text td {
+  padding: 7px 12px;
+  border-bottom: 1px solid #CADCFC;
+  color: #1E2761;
+  line-height: 1.5;
+}
+
+.message-text tr:nth-child(even) td {
+  background: #F0F4F8;
+}
+
+.message-text tr:hover td {
+  background: #E8F4F8;
+}
+
+/* Question Panel */
+.quick-actions-panel {
+  flex-shrink: 0;
+  background: white;
+  border: 1px solid #CADCFC;
+  border-radius: 8px;
+  padding: 0.6rem 0.75rem;
+}
+
+.category-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.cat-tab {
+  background: white;
+  border: 1.5px solid #CADCFC;
+  color: #64748b;
+  padding: 4px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.2s;
+}
+
+.cat-tab:hover { background: #EEF2F7; }
+.cat-tab.active { background: #EEF2F7; font-weight: 700; }
+
+.quick-actions {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.quick-btn {
+  background: white;
+  border: 1.5px solid #CADCFC;
+  color: #1E2761;
+  padding: 5px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.quick-btn:hover {
+  background: var(--btn-color, #028090);
+  color: white;
+  border-color: var(--btn-color, #028090);
+}
