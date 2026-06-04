@@ -177,6 +177,10 @@ function ChatView() {
   const [loading, setLoading] = useState(false);
   const [totalTokens, setTotalTokens] = useState(0);
   const [totalCost, setTotalCost] = useState(0);
+  const [showEmailModal, setShowEmailModal] = useState(false);
+  const [emailAddress, setEmailAddress] = useState('');
+  const [emailLoading, setEmailLoading] = useState(false);
+  const [emailStatus, setEmailStatus] = useState('');
   const bottomRef = useRef(null);
 
   useEffect(() => {
@@ -245,6 +249,42 @@ function ChatView() {
     }
   };
 
+
+  const sendEmailReport = async () => {
+    if (!emailAddress.trim()) return;
+    setEmailLoading(true);
+    setEmailStatus('');
+
+    // Get last user question and MIRA response from chat
+    const miraMessages = messages.filter(m => m.role === 'mira' && m.body.length > 100);
+    const userMessages = messages.filter(m => m.role === 'user');
+    const lastQuestion = userMessages.length > 0 ? userMessages[userMessages.length - 1].body : null;
+    const lastResponse = miraMessages.length > 0 ? miraMessages[miraMessages.length - 1] : null;
+
+    try {
+      const res = await axios.post(
+        'http://localhost:8000/api/email/send-context-report',
+        {
+          project,
+          recipient_email: emailAddress,
+          last_question: lastQuestion,
+          last_response: lastResponse ? lastResponse.body : null,
+          hil_lines: lastResponse ? lastResponse.hilLines : [],
+          sources: lastResponse ? lastResponse.sources : [],
+          response_time: lastResponse ? lastResponse.time : null,
+        }
+      );
+      if (res.data.success) {
+        setEmailStatus('success');
+      } else {
+        setEmailStatus('error');
+      }
+    } catch (err) {
+      setEmailStatus('error');
+    }
+    setEmailLoading(false);
+  };
+
   const activeQuestions = QUESTION_CATEGORIES.find(c => c.category === activeCategory);
 
   return (
@@ -254,6 +294,7 @@ function ChatView() {
         <select value={project} onChange={e => setProject(e.target.value)}>
           {PROJECTS.map(p => <option key={p} value={p}>{p}</option>)}
         </select>
+        <button className="email-report-btn" onClick={() => setShowEmailModal(true)}>📧 Email Report</button>
         <div className="session-stats">
           Session: ~{totalTokens.toLocaleString()} tokens &middot; ~${totalCost}
         </div>
@@ -356,6 +397,47 @@ function ChatView() {
           {loading ? '...' : '→'}
         </button>
       </div>
+
+      {showEmailModal && (
+        <div className="email-modal">
+          <div className="email-modal-content">
+            <div className="email-modal-header">
+              <h3>📧 Email Project Report</h3>
+              <button className="modal-close" onClick={() => { setShowEmailModal(false); setEmailStatus(''); }}>✕</button>
+            </div>
+            <p className="email-modal-project">{project}</p>
+            <p className="email-modal-note">MIRA will generate a full report including timeline, objectives, risks, governance and lessons learned.</p>
+            <input
+              className="email-input"
+              type="email"
+              placeholder="Enter recipient email..."
+              value={emailAddress}
+              onChange={e => setEmailAddress(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && sendEmailReport()}
+            />
+            {emailStatus === 'success' && (
+              <div className="email-success">✅ Report sent successfully!</div>
+            )}
+            {emailStatus === 'error' && (
+              <div className="email-error">❌ Failed to send. Please try again.</div>
+            )}
+            <div className="email-modal-actions">
+              {emailStatus === 'success' ? (
+                <button className="email-send-btn" onClick={() => { setShowEmailModal(false); setEmailStatus(''); setEmailAddress(''); }}>
+                  Close
+                </button>
+              ) : (
+                <>
+                  <button className="email-cancel-btn" onClick={() => { setShowEmailModal(false); setEmailStatus(''); }}>Cancel</button>
+                  <button className="email-send-btn" onClick={sendEmailReport} disabled={emailLoading || !emailAddress.trim()}>
+                    {emailLoading ? 'Generating & Sending...' : 'Send Report'}
+                  </button>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

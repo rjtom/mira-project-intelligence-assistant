@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 from slowapi.errors import RateLimitExceeded
-from routers import mira, planning, risk, governance
+from routers import mira, planning, risk, governance, email
 from dotenv import load_dotenv
 import os
 import json
@@ -82,6 +82,7 @@ app.include_router(mira.router)
 app.include_router(planning.router)
 app.include_router(risk.router)
 app.include_router(governance.router)
+app.include_router(email.router)
 
 @app.get("/")
 async def root():

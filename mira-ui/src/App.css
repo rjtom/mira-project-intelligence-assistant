@@ -475,3 +475,146 @@ body {
   color: white;
   border-color: var(--btn-color, #028090);
 }
+
+/* Email Button & Modal */
+.email-report-btn {
+  background: #1E2761;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+
+.email-report-btn:hover { background: #028090; }
+
+.email-modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.email-modal-content {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  width: 480px;
+  max-width: 90vw;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+}
+
+.email-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.email-modal-header h3 {
+  font-size: 16px;
+  color: #1E2761;
+  margin: 0;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #94a3b8;
+  padding: 4px;
+}
+
+.modal-close:hover { color: #1E2761; }
+
+.email-modal-project {
+  font-size: 13px;
+  font-weight: 600;
+  color: #028090;
+  margin-bottom: 0.5rem;
+  padding: 6px 10px;
+  background: #EEF2F7;
+  border-radius: 4px;
+}
+
+.email-modal-note {
+  font-size: 12px;
+  color: #64748b;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.email-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid #CADCFC;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #1E2761;
+  margin-bottom: 0.75rem;
+  transition: border 0.2s;
+}
+
+.email-input:focus { outline: none; border-color: #028090; }
+
+.email-success {
+  background: #DCFCE7;
+  border: 1px solid #86EFAC;
+  color: #166534;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-bottom: 0.75rem;
+}
+
+.email-error {
+  background: #FEE2E2;
+  border: 1px solid #FCA5A5;
+  color: #991B1B;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  margin-bottom: 0.75rem;
+}
+
+.email-modal-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.email-cancel-btn {
+  background: white;
+  border: 1.5px solid #CADCFC;
+  color: #64748b;
+  padding: 8px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.email-cancel-btn:hover { background: #EEF2F7; }
+
+.email-send-btn {
+  background: #028090;
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+
+.email-send-btn:hover { background: #026d7a; }
+.email-send-btn:disabled { background: #94a3b8; cursor: not-allowed; }
