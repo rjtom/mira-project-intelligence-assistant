@@ -15,3 +15,5 @@ mira-api/service_account.json
 mira-api/.env
 mira-ui/node_modules/
 mira-ui/build/
+
+mira-api/budget_tracker.json
