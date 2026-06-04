@@ -128,16 +128,16 @@ Reads live risk data directly from Google Sheets via Google Service Account.
 mira-project-intelligence-assistant/
 |-- README.md
 |-- RISK_MANAGEMENT.md
-|-- MIRA_Capstone.pdf            Capstone presentation
+|-- MIRA_Capstone.pdf               Capstone presentation
 |-- requirements.txt
 |-- .env.example
 |-- .gitignore
 |-- components/
-|   |-- mira_chroma_tool.py      MIRA_Project_RAG custom component
+|   |-- mira_chroma_tool.py         MIRA_Project_RAG custom component
 |-- flows/
-|   |-- MIRA 3.0.0.2.json        Main MIRA flow export
-|   |-- MIRA3.0-RAG.json         RAG sub-flow export
-|-- historical_projects/         26 fictitious project markdown files
+|   |-- MIRA 3.0.0.2.json           Main MIRA flow export
+|   |-- MIRA3.0-RAG.json            RAG sub-flow export
+|-- historical_projects/            26 fictitious project markdown files
 |   |-- 01_forgenova_ev_battery_expansion.md
 |   |-- ... (26 files total)
 |-- prompts/
@@ -149,11 +149,12 @@ mira-project-intelligence-assistant/
 |   |-- governance_prompt.md
 |   |-- final_synthesizer_prompt.md
 |-- evals/
-|   |-- mira_eval_suite.py       Full eval with LLM judge
-|   |-- mira_eval.py             Basic content eval
-|   |-- mira_hallucination_eval.py
-|   |-- mira_single_test.py
-|   |-- results/                 CSV and JSON eval outputs
+|   |-- mira_eval_suite.py          Full eval with LLM judge
+|   |-- mira_eval.py                Basic content eval
+|   |-- mira_hallucination_eval.py  Hallucination detection
+|   |-- mira_risk_eval.py           Risk-only eval with Google Sheets
+|   |-- mira_single_test.py         Quick single project test
+|   |-- results/                    CSV and JSON eval outputs
 |-- maintenance/
 |   |-- health_check.py
 |   |-- reingest.py
@@ -161,8 +162,35 @@ mira-project-intelligence-assistant/
 |   |-- cache_manager.py
 |   |-- verify_chunks.py
 |   |-- README_MAINTENANCE.md
+|-- data/
+|   |-- mira-project-rag - Risks_Master.csv   Google Sheets risk data
+|   |-- readme-data.md                         Google Sheets setup guide
+|-- mira-api/                       FastAPI backend (Phase 2)
+|   |-- main.py
+|   |-- requirements.txt
+|   |-- .env.example
+|   |-- routers/
+|   |   |-- mira.py
+|   |   |-- planning.py
+|   |   |-- risk.py
+|   |   |-- governance.py
+|   |-- services/
+|   |   |-- langflow.py
+|   |   |-- sheets.py
+|   |-- models/
+|   |   |-- schemas.py
+|-- mira-ui/                        React frontend (Phase 2)
+|   |-- src/
+|   |   |-- App.js
+|   |   |-- App.css
+|   |   |-- components/
+|   |   |   |-- PlanningView.js
+|   |   |   |-- RiskView.js
+|   |   |   |-- GovernanceView.js
+|   |-- package.json
 |-- docs/
 |   |-- PHASE2_ROADMAP.md
+|   |-- mira_eval_dashboard.html    Eval results dashboard
 |-- .vscode/
 |   |-- launch.json
 ```
