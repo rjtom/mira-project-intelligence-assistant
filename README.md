@@ -324,7 +324,11 @@ See [maintenance/README_MAINTENANCE.md](maintenance/README_MAINTENANCE.md) for c
 | Avg response time | <25s | 27.8s |
 | Cost per query | <$0.10 | **~$0.05** ✅ |
 | Projects tested | 26 | **26** ✅ |
-| Total eval queries | 130 | **130** ✅ |
+| Total RAG queries | 130 | **130** ✅ |
+| Risk eval pass rate | >90% | **92.3%** (24/26) ✅ |
+| Risk avg judge score | >5.0/10 | **5.0/10** ✅ |
+| Risk data source | Google Sheets | **Live** ✅ |
+| Total eval queries | 156 | **156** ✅ |
 
 ### LLM Judge Breakdown (Claude Sonnet as Judge)
 
@@ -335,12 +339,12 @@ See [maintenance/README_MAINTENANCE.md](maintenance/README_MAINTENANCE.md) for c
 | Completeness | ~8.5/10 |
 | Hallucination Free | ~9.0/10 |
 | Relevance | ~9.0/10 |
-| **Overall** | **~8.8/10** |
+| **Overall** | **8.3/10** ✅ |
 
-> Scores based on 130 RAG queries across 26 projects.
-> Judge notes: MIRA occasionally provides more context than
-> strictly asked — flagged as minor over-completeness,
-> not hallucination. Governance questions score highest (10/10).
+> Evaluated across 130 RAG queries covering 26 ForgeNova projects.
+> Judge notes: MIRA occasionally provides more context than strictly asked —
+> flagged as minor over-completeness, not hallucination.
+> Governance questions score highest at 10/10
 
 ---
 
