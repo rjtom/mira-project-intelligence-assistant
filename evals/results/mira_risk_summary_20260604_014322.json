@@ -1,0 +1,9 @@
+{
+  "timestamp": "20260604_014322",
+  "total_queries": 26,
+  "content_pass_rate": 92.3,
+  "avg_judge_score": 5.0,
+  "avg_response_time": 28.8,
+  "total_time": 749.8,
+  "data_source": "Google Sheets Risk Matrix"
+}
