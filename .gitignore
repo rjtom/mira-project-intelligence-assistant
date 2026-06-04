@@ -13,3 +13,5 @@ mira-api/venv/
 mira-ui/node_modules/
 mira-api/service_account.json
 mira-api/.env
+mira-ui/node_modules/
+mira-ui/build/
