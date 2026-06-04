@@ -2,7 +2,7 @@
 
 **Capstone Project** - Applied Agentic AI for Product Managers & Technical Program Managers
 **Author**: Raju Thomas | [rjtom](https://github.com/rjtom)
-**Date**: June 2, 2026
+**Date**: June 2026
 
 > **Disclaimer**: All company names, project data, risk information, and scenarios
 > in this repository are completely fictional and fabricated for educational purposes only.
@@ -53,15 +53,83 @@ Orchestrator (gpt-4o-mini)
 
 ---
 
+## Phase 2 — Web Interface & Email Addon
+
+### MIRA UI (React)
+
+Immersive conversational dashboard built with React + Tailwind.
+
+```
+localhost:3000
+     |
+     ├── Mission Control metrics bar (live stats)
+     ├── MIRA greeting — "I am Mira, your project intelligence assistant"
+     ├── Active project selector (all 26 ForgeNova projects)
+     ├── Free-text chat input
+     ├── 5 question categories — 25 quick actions
+     │   ├── Planning (Timeline, Objectives, Resources, Lessons, Milestones, Status)
+     │   ├── Risk (Major Risks, Mitigation, Risk Scores, Likelihood)
+     │   ├── Governance (Checkpoints, HIL, Compliance, Ethics, Stakeholders)
+     │   ├── Cross-Project (Compare, All Status, Best Lessons, Highest Risks)
+     │   └── Deep Dive (Team Size, Budget, Technology, Success Criteria, Blockers)
+     ├── Markdown rendering (react-markdown + remark-gfm)
+     ├── HIL cards (yellow warning for human judgment required)
+     ├── Source footnotes
+     ├── Token + cost tracking per message
+     └── Email Report button (context-aware)
+```
+
+### MIRA API (FastAPI)
+
+Python backend connecting React UI to Langflow orchestration layer.
+
+```
+localhost:8000
+     |
+     ├── POST /api/mira/query          Core MIRA query
+     ├── POST /api/planning/query      Planning questions
+     ├── POST /api/planning/full       Full project brief
+     ├── POST /api/risk/query          Risk assessment
+     ├── GET  /api/risk/raw            Raw Google Sheets data
+     ├── POST /api/governance/query    Governance checkpoints
+     ├── POST /api/governance/hil      HIL decisions
+     ├── POST /api/email/send-report   Full project email report
+     ├── POST /api/email/send-context-report  Context-aware email
+     ├── POST /api/email/test          Test email
+     ├── GET  /budget                  Budget tracker
+     └── GET  /docs                    Swagger UI
+```
+
+### Protection & Rate Limiting
+
+```python
+Rate limit:   5 queries per IP per hour
+Budget cap:   $25 maximum demo spend
+Cost tracker: Real-time query count + cost at /budget
+```
+
+### Email Reports (Resend)
+
+Context-aware HTML email reports sent via Resend API.
+
+- **Context Report** — captures exact question + MIRA response + HIL card + sources
+- **Full Report** — complete project brief (timeline, objectives, risks, governance, lessons)
+- Markdown rendered to HTML in email
+- Professional MIRA branding with navy/teal theme
+- HIL warning card included in every report
+
+---
+
 ## Key Capabilities
 
-- **Project Planning** - Timelines, milestones, objectives, and success criteria from 26 fictitious project documents
-- **Risk Assessment** - Fabricated risk data from Google Sheets including scores, mitigation strategies, HIL checkpoints
-- **Status Reporting** - Current project phase, progress, blockers, and next steps
-- **Governance Oversight** - Human-in-the-Loop recommendations and ethical review on every query
-- **Lessons Learned** - Cross-project insights and critical thinking analysis
-- **Cross-Project Queries** - Compare and summarize across all 26 projects simultaneously
-- **Transparent Grounding** - Clearly states when information is insufficient or uncertain
+- **Conversational Intelligence** — Ask anything in natural language
+- **Project Planning** — Timelines, milestones, objectives, success criteria
+- **Risk Assessment** — Live Google Sheets risk data, no hallucination
+- **Governance Oversight** — HIL checkpoints, compliance, ethics on every query
+- **Lessons Learned** — Cross-project insights and critical thinking
+- **Cross-Project Comparisons** — Compare initiatives side by side
+- **Email Reports** — Context-aware HTML reports via Resend
+- **Transparent Grounding** — Sources cited, costs tracked, HIL flagged
 
 ---
 
@@ -72,53 +140,18 @@ Orchestrator (gpt-4o-mini)
 | Workflow | Langflow 1.9.2 Desktop (Mac) |
 | RAG Vector Store | Chroma DB (local, persistent) |
 | Embeddings | OpenAI text-embedding-3-small |
-| Risk Data | Google Sheets via custom Python component |
+| Risk Data | Google Sheets via Service Account |
 | Orchestrator | OpenAI gpt-4o-mini |
 | Planner | Anthropic claude-haiku-4-5 |
 | Risk Assessor | Anthropic claude-sonnet-4-5 |
 | Status Reporter | Anthropic claude-haiku-4-5 |
 | Governance Agent | Anthropic claude-sonnet-4-5 |
 | Final Synthesizer | OpenAI gpt-4o-mini |
+| Backend API | FastAPI + uvicorn |
+| Frontend | React + react-markdown + remark-gfm |
+| Email | Resend API |
+| Rate Limiting | slowapi |
 | Eval Framework | Custom Python + Claude Sonnet as Judge |
-
----
-
-## Prompt Engineering Methodology
-
-MIRA uses a hybrid prompting methodology combining 10 techniques:
-
-| Technique | Purpose | Applied To |
-|-----------|---------|-----------|
-| System Prompting | Agent identity and constraints | All agents |
-| Role Prompting | Expert persona assignment | All agents |
-| Instruction Prompting | Explicit behavioral directives | All agents |
-| Chain-of-Thought (CoT) | Structured reasoning chains | Risk Assessor |
-| ReAct | Reason before acting (tool use) | All agents |
-| Grounding Prompting | Prevents hallucination | All agents |
-| Few-Shot Prompting | Implicit output format examples | Final Synthesizer |
-| Constraint Prompting | Hard limits on behavior | All agents |
-| Persona Prompting | Consistent MIRA voice | All agents |
-| Output Structure Prompting | Defines expected format | All agents |
-
-See [prompts/PROMPTING_METHODOLOGY.md](prompts/PROMPTING_METHODOLOGY.md) for full details.
-
----
-
-## Custom Components
-
-### 1. MIRA_Project_RAG
-Direct Chroma DB retrieval with smart project filtering and embedding cache.
-- Detects cross-project vs single-project queries
-- Keyword + phrase map scoring to identify correct source document
-- col.get() with metadata filter for reliable retrieval (fixes timestamp ID issue)
-- Disk-based embedding cache for speed (43% improvement on repeat queries)
-- No HTTP calls - avoids Langflow self-call deadlock
-
-### 2. MIRA Risk Matrix Reader
-Reads live risk data directly from Google Sheets via Google Service Account.
-- Filters by project name dynamically
-- Returns structured risk records with all columns
-- Tool-mode compatible for agent use
 
 ---
 
@@ -128,18 +161,16 @@ Reads live risk data directly from Google Sheets via Google Service Account.
 mira-project-intelligence-assistant/
 |-- README.md
 |-- RISK_MANAGEMENT.md
-|-- MIRA_Capstone.pdf               Capstone presentation
+|-- MIRA_Capstone.pdf              Capstone presentation
 |-- requirements.txt
 |-- .env.example
 |-- .gitignore
 |-- components/
-|   |-- mira_chroma_tool.py         MIRA_Project_RAG custom component
+|   |-- mira_chroma_tool.py        MIRA_Project_RAG custom component
 |-- flows/
-|   |-- MIRA 3.0.0.2.json           Main MIRA flow export
-|   |-- MIRA3.0-RAG.json            RAG sub-flow export
-|-- historical_projects/            26 fictitious project markdown files
-|   |-- 01_forgenova_ev_battery_expansion.md
-|   |-- ... (26 files total)
+|   |-- MIRA 3.0.0.2.json          Main MIRA flow export
+|   |-- MIRA3.0-RAG.json           RAG sub-flow export
+|-- historical_projects/           26 fictitious project markdown files
 |-- prompts/
 |   |-- PROMPTING_METHODOLOGY.md
 |   |-- orchestrator_prompt.md
@@ -149,12 +180,12 @@ mira-project-intelligence-assistant/
 |   |-- governance_prompt.md
 |   |-- final_synthesizer_prompt.md
 |-- evals/
-|   |-- mira_eval_suite.py          Full eval with LLM judge
-|   |-- mira_eval.py                Basic content eval
-|   |-- mira_hallucination_eval.py  Hallucination detection
-|   |-- mira_risk_eval.py           Risk-only eval with Google Sheets
-|   |-- mira_single_test.py         Quick single project test
-|   |-- results/                    CSV and JSON eval outputs
+|   |-- mira_eval_suite.py         Full eval with LLM judge
+|   |-- mira_eval.py               Basic content eval
+|   |-- mira_hallucination_eval.py Hallucination detection
+|   |-- mira_risk_eval.py          Risk eval with Google Sheets
+|   |-- mira_single_test.py        Quick single project test
+|   |-- results/                   CSV and JSON eval outputs
 |-- maintenance/
 |   |-- health_check.py
 |   |-- reingest.py
@@ -165,8 +196,8 @@ mira-project-intelligence-assistant/
 |-- data/
 |   |-- mira-project-rag - Risks_Master.csv   Google Sheets risk data
 |   |-- readme-data.md                         Google Sheets setup guide
-|-- mira-api/                       FastAPI backend (Phase 2)
-|   |-- main.py
+|-- mira-api/                      FastAPI backend (Phase 2)
+|   |-- main.py                    App with rate limiting + budget cap
 |   |-- requirements.txt
 |   |-- .env.example
 |   |-- routers/
@@ -174,148 +205,121 @@ mira-project-intelligence-assistant/
 |   |   |-- planning.py
 |   |   |-- risk.py
 |   |   |-- governance.py
+|   |   |-- email.py
 |   |-- services/
 |   |   |-- langflow.py
 |   |   |-- sheets.py
+|   |   |-- email.py
 |   |-- models/
 |   |   |-- schemas.py
-|-- mira-ui/                        React frontend (Phase 2)
+|-- mira-ui/                       React frontend (Phase 2)
 |   |-- src/
 |   |   |-- App.js
 |   |   |-- App.css
 |   |   |-- components/
+|   |   |   |-- ChatView.js
 |   |   |   |-- PlanningView.js
 |   |   |   |-- RiskView.js
 |   |   |   |-- GovernanceView.js
 |   |-- package.json
 |-- docs/
 |   |-- PHASE2_ROADMAP.md
-|   |-- mira_eval_dashboard.html    Eval results dashboard
+|   |-- mira_eval_dashboard.html   Live eval dashboard
 |-- .vscode/
 |   |-- launch.json
 ```
 
 ---
 
-## About the Fictitious Data
-
-All project data in `historical_projects/` is completely fabricated:
-
-- **ForgeNova Automotive** - fictional company, does not exist
-- **26 project documents** - AI-generated scenarios for learning purposes
-- **Risk Matrix** - fabricated risk data in Google Sheets for demo purposes
-- **All timelines, budgets, team sizes** - fictional numbers for educational use
-
-This data was specifically designed to test RAG retrieval, grounding, and
-hallucination detection in a multi-agent AI system.
-
----
-
-## Prerequisites
-
-- Langflow Desktop 1.9.2 (Mac)
-- Python 3.12+
-- OpenAI API key
-- Anthropic API key
-- Google Service Account JSON (for Sheets access)
-
----
-
 ## How to Run MIRA
 
-### Step 1 - Clone the Repository
+### Prerequisites
+
+- Langflow Desktop 1.9.2 (Mac)
+- Python 3.10+ recommended (3.8 works with warnings)
+- Node.js 18+
+- OpenAI API key
+- Anthropic API key
+- Google Service Account JSON
+- Resend API key (for email)
+
+### Step 1 - Clone
 
 ```bash
 git clone https://github.com/rjtom/mira-project-intelligence-assistant
 cd mira-project-intelligence-assistant
 ```
 
-### Step 2 - Install Dependencies
+### Step 2 - Set Up Chroma Vector Store
 
 ```bash
 ~/.langflow/.langflow-venv/bin/pip install -r requirements.txt
-```
-
-### Step 3 - Configure Environment
-
-```bash
-cp .env.example .env
-# Edit .env with your actual API keys
-```
-
-### Step 4 - Set Up Chroma Vector Store
-
-```bash
 ~/.langflow/.langflow-venv/bin/python3 maintenance/full_reingest.py
 ~/.langflow/.langflow-venv/bin/python3 maintenance/verify_chunks.py
 ```
 
-Expected output:
-```
-Total chunks: ~208
-Projects: 26/26
-Status: PASS
-```
-
-### Step 5 - Import Flows into Langflow Desktop
+### Step 3 - Import Flows into Langflow
 
 1. Open Langflow Desktop
-2. Import `flows/MIRA 3.0.0.2.json` as the main flow
-3. Import `flows/MIRA3.0-RAG.json` as the RAG flow
+2. Import `flows/MIRA 3.0.0.2.json` as main flow
+3. Import `flows/MIRA3.0-RAG.json` as RAG flow
 4. Configure API keys in Langflow Global Variables
 
-### Step 6 - Configure Custom Components
-
-MIRA_Project_RAG component:
-- Chroma Path: `/Users/YOUR_USERNAME/.langflow/chroma_db`
-- Collection Name: `MIRARAG`
-- OpenAI API Key: your key
-
-MIRA Risk Matrix Reader:
-- Service Account JSON: path to your Google Service Account file
-- Spreadsheet ID: your Google Sheets ID
-- Range: `Risks_Master!A1:Z1000`
-
-### Step 7 - Test MIRA
+### Step 4 - Start FastAPI Backend
 
 ```bash
-~/.langflow/.langflow-venv/bin/python3 evals/mira_single_test.py
+cd mira-api
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
+# Edit .env with your API keys
+uvicorn main:app --reload
+# API running at http://localhost:8000
+# Swagger UI at http://localhost:8000/docs
 ```
 
-Or in Langflow Playground:
-```
-What is the timeline for ForgeNova EV Battery Gigafactory Expansion?
-What are the major risks for ForgeNova Autonomous Driving Platform?
-What lessons were learned from ForgeNova DevOps Pipeline Transformation?
-```
-
-### Step 8 - Run Full Eval Suite
+### Step 5 - Start React Frontend
 
 ```bash
+cd mira-ui
+npm install
+npm start
+# UI running at http://localhost:3000
+```
+
+### Step 6 - Set Up Google Sheets Risk Matrix
+
+See `data/readme-data.md` for full setup guide.
+
+```
+1. Upload data/mira-project-rag - Risks_Master.csv to Google Sheets
+2. Create Google Cloud Service Account
+3. Share sheet with service account email
+4. Add service_account.json to mira-api/
+5. Configure SPREADSHEET_ID in mira-api/.env
+```
+
+### Step 7 - Configure Email (Optional)
+
+```bash
+# Sign up at resend.com
+# Add to mira-api/.env:
+RESEND_API_KEY=your_resend_api_key
+FROM_EMAIL=your_verified_email@domain.com
+```
+
+### Step 8 - Run Eval Suite
+
+```bash
+cd mira-project-intelligence-assistant
+export FLOW_ID=your_flow_id
+export LANGFLOW_API_KEY=your_key
+export ANTHROPIC_API_KEY=your_key
+export OPENAI_API_KEY=your_key
+export DOCS_PATH=/path/to/historical_projects/*.md
 ~/.langflow/.langflow-venv/bin/python3 evals/mira_eval_suite.py
 ```
-
-130 RAG queries across 26 projects. ~60 minutes.
-Results saved to `evals/results/`
-
----
-
-## Vector Store Maintenance
-
-```bash
-# Daily health check
-~/.langflow/.langflow-venv/bin/python3 maintenance/health_check.py
-
-# After updating project files
-~/.langflow/.langflow-venv/bin/python3 maintenance/reingest.py
-~/.langflow/.langflow-venv/bin/python3 maintenance/cache_manager.py --clear-all
-~/.langflow/.langflow-venv/bin/python3 maintenance/verify_chunks.py
-
-# Monthly full rebuild
-~/.langflow/.langflow-venv/bin/python3 maintenance/full_reingest.py
-```
-
-See [maintenance/README_MAINTENANCE.md](maintenance/README_MAINTENANCE.md) for cron schedule.
 
 ---
 
@@ -323,22 +327,22 @@ See [maintenance/README_MAINTENANCE.md](maintenance/README_MAINTENANCE.md) for c
 
 ### Layer 1 - Content Pass/Fail
 - 26 projects x 5 RAG questions = 130 queries
-- Checks: project name present, question keywords, not generic, >200 chars
+- Checks: project name present, keywords, not generic, >200 chars
 
 ### Layer 2 - Hallucination Detection
 - RAG responses vs markdown source files
-- Checks: timeline accuracy, status, team size, milestone dates
+- Risk responses vs Google Sheets data
 
 ### Layer 3 - LLM as Judge (Claude Sonnet)
 
-| Dimension | What It Measures | Score |
-|-----------|-----------------|-------|
-| Factual Accuracy | Facts correct vs ground truth | ~8.5/10 |
-| Groundedness | Based on source data | ~8.5/10 |
-| Completeness | Covers key information | ~8.0/10 |
-| Hallucination Free | No fabricated details | ~9.0/10 |
-| Relevance | Answers the question | ~8.5/10 |
-| **Overall** | **Average** | **8.3/10** |
+| Dimension | Score |
+|-----------|-------|
+| Factual Accuracy | ~9.0/10 |
+| Groundedness | ~9.0/10 |
+| Completeness | ~8.5/10 |
+| Hallucination Free | ~9.0/10 |
+| Relevance | ~9.0/10 |
+| **Overall** | **8.3/10** |
 
 ---
 
@@ -349,30 +353,18 @@ See [maintenance/README_MAINTENANCE.md](maintenance/README_MAINTENANCE.md) for c
 | Content pass rate | >95% | **99.2%** (129/130) ✅ |
 | LLM Judge score | >7.5/10 | **8.3/10** ✅ |
 | Hallucination Free | >7.5/10 | **~9.0/10** ✅ |
+| Risk eval pass rate | >90% | **92.3%** (24/26) ✅ |
 | Avg response time | <25s | 27.8s |
 | Cost per query | <$0.10 | **~$0.05** ✅ |
 | Projects tested | 26 | **26** ✅ |
-| Total RAG queries | 130 | **130** ✅ |
-| Risk eval pass rate | >90% | **92.3%** (24/26) ✅ |
-| Risk avg judge score | >5.0/10 | **5.0/10** ✅ |
-| Risk data source | Google Sheets | **Live** ✅ |
 | Total eval queries | 156 | **156** ✅ |
 
 ### LLM Judge Breakdown (Claude Sonnet as Judge)
 
-| Dimension | Score |
-|-----------|-------|
-| Factual Accuracy | ~9.0/10 |
-| Groundedness | ~9.0/10 |
-| Completeness | ~8.5/10 |
-| Hallucination Free | ~9.0/10 |
-| Relevance | ~9.0/10 |
-| **Overall** | **8.3/10** ✅ |
-
 > Evaluated across 130 RAG queries covering 26 ForgeNova projects.
+> Governance questions score highest at 10/10.
 > Judge notes: MIRA occasionally provides more context than strictly asked —
 > flagged as minor over-completeness, not hallucination.
-> Governance questions score highest at 10/10
 
 ---
 
@@ -385,17 +377,19 @@ See [maintenance/README_MAINTENANCE.md](maintenance/README_MAINTENANCE.md) for c
 | GPT ignores tool instructions | Training data confidence | Switched to Claude for all RAG agents |
 | Chroma $in filter failure | Timestamp-based chunk IDs | Use col.get() with where filter |
 | DevOps chunks missing | Ingestion script skipped file | Re-ingested with timestamp IDs |
-| Embedding cache stale | Cache hit before new chunks | Clear cache after ingestion |
+| Risk hallucination | Google Sheets not connected | Service account + project name mapping |
 
 ---
 
-## Phase 2 Roadmap
+## Demo Budget Protection
 
-See [docs/PHASE2_ROADMAP.md](docs/PHASE2_ROADMAP.md) for the 2-week sprint plan:
-- Email Status Report Addon (automated weekly reports)
-- Planning View (React web interface)
-- Risk Assessor View (risk heatmap dashboard)
-- Governance View (HIL checkpoint tracker)
+MIRA API includes built-in cost protection for demos:
+
+```
+Rate limit:   5 queries per IP per hour
+Budget cap:   $25 maximum (configurable via MAX_DEMO_BUDGET)
+Budget check: GET http://localhost:8000/budget
+```
 
 ---
 
@@ -405,7 +399,15 @@ See [RISK_MANAGEMENT.md](RISK_MANAGEMENT.md) for:
 - 15 identified system risks
 - 5 risks resolved during development
 - HIL checkpoint requirements
-- Monitoring approach
+
+---
+
+## Eval Dashboard
+
+Live eval results dashboard:
+```
+https://rjtom.github.io/mira-project-intelligence-assistant/eval_dashboard.html
+```
 
 ---
 
