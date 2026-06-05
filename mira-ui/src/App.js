@@ -11,7 +11,7 @@ function App() {
           <span>PROJECT INTELLIGENCE ASSISTANT</span>
         </div>
         <div className="header-tagline">
-          Supporting human wisdom, not replacing it.
+          Intelligence grounded in human judgment.
         </div>
       </header>
 

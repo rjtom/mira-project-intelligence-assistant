@@ -147,7 +147,7 @@ body{{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgro
     {r_section}
     {s_section}
   </div>
-  <div class="footer">Supporting human wisdom, not replacing it. — MIRA Project Intelligence Assistant</div>
+  <div class="footer">Intelligence grounded in human judgment. — MIRA Project Intelligence Assistant</div>
 </div>
 </body></html>"""
 
