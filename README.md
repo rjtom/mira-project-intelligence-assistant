@@ -333,7 +333,22 @@ export DOCS_PATH=/path/to/historical_projects/*.md
 - RAG responses vs markdown source files
 - Risk responses vs Google Sheets data
 
-### Layer 3 - LLM as Judge (Claude Sonnet)
+
+## Performance Results
+
+| Metric | Target | Result |
+|--------|--------|--------|
+| Content pass rate | >95% | **100%** (130/130) ✅ |
+| LLM Judge score | >7.5/10 | **8.2/10** ✅ |
+| Hallucination Free | >7.5/10 | **~9.0/10** ✅ |
+| Risk eval pass rate | >90% | **92.3%** (24/26) ✅ |
+| Avg response time | <25s | **26.1s** |
+| Cost per query | <$0.10 | **~$0.05** ✅ |
+| Projects tested | 26 | **26** ✅ |
+| Total RAG queries | 130 | **130** ✅ |
+| Total eval queries | 156 | **156** ✅ |
+
+### LLM Judge Breakdown (Claude Sonnet as Judge)
 
 | Dimension | Score |
 |-----------|-------|
@@ -342,30 +357,11 @@ export DOCS_PATH=/path/to/historical_projects/*.md
 | Completeness | ~8.5/10 |
 | Hallucination Free | ~9.0/10 |
 | Relevance | ~9.0/10 |
-| **Overall** | **8.3/10** |
+| **Overall** | **8.2/10** ✅ |
 
----
-
-## Performance Results
-
-| Metric | Target | Result |
-|--------|--------|--------|
-| Content pass rate | >95% | **99.2%** (129/130) ✅ |
-| LLM Judge score | >7.5/10 | **8.3/10** ✅ |
-| Hallucination Free | >7.5/10 | **~9.0/10** ✅ |
-| Risk eval pass rate | >90% | **92.3%** (24/26) ✅ |
-| Avg response time | <25s | 27.8s |
-| Cost per query | <$0.10 | **~$0.05** ✅ |
-| Projects tested | 26 | **26** ✅ |
-| Total eval queries | 156 | **156** ✅ |
-
-### LLM Judge Breakdown (Claude Sonnet as Judge)
-
-> Evaluated across 130 RAG queries covering 26 ForgeNova projects.
-> Governance questions score highest at 10/10.
-> Judge notes: MIRA occasionally provides more context than strictly asked —
-> flagged as minor over-completeness, not hallucination.
-
+> Phase 2 Final — 100% content pass rate across all 130 queries.
+> Improved from 99.2% in Phase 1. Response time improved from 27.8s to 26.1s.
+> Intelligence grounded in human judgment.
 ---
 
 ## Known Issues & Resolutions
