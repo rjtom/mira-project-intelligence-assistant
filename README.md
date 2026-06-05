@@ -407,6 +407,11 @@ https://rjtom.github.io/mira-project-intelligence-assistant/eval_dashboard.html
 
 ---
 
+## Demo
+
+🎬 **[Watch MIRA in Action](https://www.loom.com/share/3a434e6ec01e46ea831a1fcf71d344cf)**
+
+
 Intelligence grounded in human judgment.
 
 **Raju Thomas**
