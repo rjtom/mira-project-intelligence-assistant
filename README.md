@@ -407,7 +407,7 @@ https://rjtom.github.io/mira-project-intelligence-assistant/eval_dashboard.html
 
 ---
 
-Supporting human wisdom, not replacing it.
+Intelligence grounded in human judgment.
 
 **Raju Thomas**
 Capstone Project - Applied Agentic AI
